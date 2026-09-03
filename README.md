@@ -4,40 +4,55 @@
 
 How does the geographic distribution of homelessness compare with the distribution of shelter services across cities in Santa Clara County?
 
-## Project Description
+## Project Overview
 
 This project explores the relationship between homelessness and shelter availability across Santa Clara County, California.
 
-The interactive dashboard uses 2025 Point-in-Time (PIT) Count data to compare the number of people experiencing homelessness in different cities with the locations of selected shelters.
+The dashboard uses 2025 Point-in-Time (PIT) Count data to visualize the number of people experiencing homelessness in different cities and compares those counts with selected shelter locations.
 
-On the map:
+The goal is to make it easier to see whether shelter resources appear to be located near cities with higher levels of homelessness.
 
-- Each red dot represents approximately 10 people experiencing homelessness.
-- Red dots are distributed symbolically within or around each city based on the city's PIT Count.
-- Blue dots represent selected shelter locations.
-- Users can click the map markers to view additional information.
+## Interactive Map
 
-The red dots do not represent the exact physical locations of individual people experiencing homelessness. They are a visualization of city-level PIT Count data.
+The dashboard contains an interactive MapLibre GL JS map.
 
-## Data Visualization
+### Red Dots: Homelessness
 
-### Homelessness
+Each red dot represents approximately 10 people experiencing homelessness based on the 2025 PIT Count.
 
-The dashboard uses 2025 city-level PIT Count data for Santa Clara County.
+For example:
 
-Each red dot represents approximately 10 people counted in the PIT Count.
+- A city with about 100 people would display about 10 red dots.
+- A city with about 500 people would display about 50 red dots.
+- A city with about 6,500 people would display about 650 red dots.
 
-For example, a city with approximately 500 people experiencing homelessness would display about 50 red dots.
+The red dots have a fixed visual size when the user zooms in or out.
 
-### Shelter Locations
+Clicking a red dot displays information about the city, including:
 
-Blue markers represent selected homelessness shelters and interim housing locations.
+- Total PIT Count
+- Unsheltered count
+- Sheltered count
 
-Clicking a blue marker displays information such as:
+### Blue Dots: Shelter Locations
+
+Blue dots represent selected documented shelters or interim housing facilities.
+
+Clicking a blue dot displays:
 
 - Shelter name
 - Shelter type
 - Address
+
+## Important Limitation
+
+The red dots do **not** show the actual locations of individual people experiencing homelessness.
+
+The PIT Count data used in this project are available at the city level. Therefore, the red dots are distributed symbolically around each city to visualize the relative number of people counted there.
+
+Each red dot represents approximately 10 people, but its exact position on the map should not be interpreted as the location of those individuals.
+
+The shelter layer is also an initial dataset of selected documented facilities and may not include every homelessness service in Santa Clara County.
 
 ## Data Sources
 
@@ -45,51 +60,65 @@ Clicking a blue marker displays information such as:
 
 2025 Santa Clara County Point-in-Time (PIT) Count
 
-The PIT Count provides estimates of sheltered and unsheltered people experiencing homelessness across cities in Santa Clara County.
+The PIT Count provides city-level estimates of people experiencing homelessness, including sheltered and unsheltered populations.
 
 ### Shelter Data
 
-Shelter locations were collected from publicly available information, including:
+Publicly available shelter information was collected from organizations including:
 
 - LifeMoves
 - Family Supportive Housing
 
-## Map Technology
+## Technology
 
-The dashboard was built using:
+This dashboard was built using:
 
+- HTML
+- CSS
+- JavaScript
 - MapLibre GL JS
-- A grayscale vector-tile basemap
-- GeoJSON data layers
-- HTML, CSS, and JavaScript
+- GeoJSON
+- Grayscale vector-tile basemap
+- GitHub
 - GitHub Pages
 
-The grayscale basemap helps keep the research data visually prominent.
+The grayscale basemap is used so that the research data remain visually prominent.
 
-## Important Limitation
+## Current Dashboard Features
 
-The homelessness data are available at the city level.
-
-Therefore, the red dots on the map should not be interpreted as the exact locations of individual people experiencing homelessness.
-
-The dots are distributed symbolically to help visualize differences in homelessness counts between cities.
-
-Similarly, the shelter locations included in the first version of the dashboard represent selected documented facilities and may not include every homelessness service available in Santa Clara County.
+- Interactive MapLibre map
+- 2025 city-level PIT Count visualization
+- One red dot for approximately every 10 people experiencing homelessness
+- Selected shelter locations
+- Clickable PIT Count information
+- Clickable shelter information
+- Map legend
+- Grayscale basemap
 
 ## Future Development
 
-Future versions of the dashboard may include additional homelessness resources, such as:
+Future versions of this project may include additional homelessness resources, such as:
 
+- Additional shelters
+- Temporary housing programs
+- Safe parking programs
 - Food assistance programs
 - Health clinics
-- Safe parking programs
-- Temporary housing programs
-- Additional shelters
 
-Future analysis may also compare the number and geographic distribution of services with homelessness levels in each city.
+Future analysis could also compare the number of services available in each city with its PIT Count and explore whether some areas appear to have greater gaps between need and available resources.
 
 ## Dashboard
 
-View the interactive dashboard here:
+View the published dashboard here:
+
+**PASTE YOUR GITHUB PAGES LINK HERE**
+
+## GitHub Repository
+
+View the project repository here:
 
 (https://stevieee-here.github.io/homelessness-services/)
+
+## Author
+
+Steven Liu
