@@ -1,51 +1,607 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Steven Homelessness Project</title>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Homelessness and Shelter Access in Santa Clara County</title>
+
+  <!-- MapLibre CSS -->
   <link
     rel="stylesheet"
-    href="https://unpkg.com/maplibre-gl@^6.7.0/dist/maplibre-gl.css"
-  />
+    href="https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.css"
+  >
 
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: #222;
+    }
+
+    header {
+      background: white;
+      padding: 30px 40px;
+      border-bottom: 1px solid #ddd;
     }
 
     h1 {
-      text-align: center;
+      margin-top: 0;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px;
+    }
+
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 25px;
+      border-radius: 8px;
     }
 
     #map {
       width: 100%;
-      height: 600px;
+      height: 550px;
+      border-radius: 8px;
     }
+
+    .source {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .legend {
+  background: white;
+  padding: 12px 15px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.legend div {
+  margin: 6px 0;
+}
+
+.pit-symbol {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-color: #d73027;
+  opacity: 0.70;
+  border: 2px solid white;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.shelter-symbol {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: #2166ac;
+  border: 2px solid white;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+    
   </style>
 </head>
 
+
 <body>
 
-<h1>Homelessness and Shelter Access in Santa Clara County</h1>
+<header>
+  <h1>Homelessness and Shelter Access in Santa Clara County</h1>
+
+  <p>
+    An exploratory geographic analysis of homelessness and shelter
+    resources across Santa Clara County, California.
+  </p>
+</header>
+
+
+<main>
+
+  <div class="section">
+
+    <h2>Research Question</h2>
+
+    <p>
+      How does the geographic distribution of shelters compare with
+      the distribution of people experiencing homelessness across
+      cities in Santa Clara County?
+    </p>
+
+  </div>
+
+
+  <div class="section">
+
+   <h2>2025 Homelessness and Shelter Map</h2>
+
+<div class="legend">
+  <div>
+    <span class="pit-symbol"></span>
+    PIT Count — larger circle = more people experiencing homelessness
+  </div>
+
+  <div>
+    <span class="shelter-symbol"></span>
+    Shelter location
+  </div>
+</div>
 
 <div id="map"></div>
 
+  </div>
+
+
+  <div class="section">
+
+    <h2>Data Sources</h2>
+
+    <p class="source">
+      2025 Santa Clara County Point-in-Time (PIT) Count and
+      publicly available shelter location data.
+    </p>
+
+  </div>
+
+</main>
+
+
+<!-- MapLibre -->
 <script type="module">
 
-  import * as maplibregl from
-    'https://unpkg.com/maplibre-gl@^6.7.0/dist/maplibre-gl.mjs';
+  import * as maplibregl
+  from "https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.mjs";
+
 
   const map = new maplibregl.Map({
-    container: 'map',
-    style: 'https://demotiles.maplibre.org/style.json',
+    container: "map",
+    style:
+      "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
     center: [-121.90, 37.30],
-    zoom: 9
+    zoom: 8.7
   });
 
-  map.addControl(new maplibregl.NavigationControl());
 
+  map.addControl(
+    new maplibregl.NavigationControl(),
+    "top-right"
+  );
+
+
+  // -----------------------------
+  // 2025 PIT COUNT DATA
+  // -----------------------------
+
+  const pitData = {
+
+  "type": "FeatureCollection",
+
+    "features": [
+
+      {
+        "type": "Feature",
+        "properties": {
+          "city": "Campbell",
+          "total": 108,
+          "unsheltered": 108,
+          "sheltered": 0
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-121.9499, 37.2872]
+        }
+      },
+
+      {
+        "type": "Feature",
+        "properties": {
+          "city": "Cupertino",
+          "total": 101,
+          "unsheltered": 101,
+          "sheltered": 0
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-122.0322, 37.3230]
+        }
+      },
+
+      {
+        "type": "Feature",
+        "properties": {
+          "city": "Gilroy",
+          "total": 959,
+          "unsheltered": 702,
+          "sheltered": 257
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-121.5683, 37.0058]
+        }
+      },
+
+      {
+        "type": "Feature",
+        "properties": {
+          "city": "Los Altos",
+          "total": 12,
+          "unsheltered": 12,
+          "sheltered": 0
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-122.1141, 37.3852]
+        }
+      },
+
+      {
+        "type": "Feature",
+        "properties": {
+          "city": "Los Gatos",
+          "total": 27,
+          "unsheltered": 27,
+          "sheltered": 0
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-121.9624, 37.2358]
+        }
+      },
+
+      {
+        "type": "Feature",
+        "properties": {
+          "city": "Milpitas",
+          "total": 79,
+          "unsheltered": 79,
+          "sheltered": 0
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-121.8996, 37.4323]
+        }
+      },
+
+      {
+        "type": "Feature",
+        "properties": {
+          "city": "Morgan Hill",
+          "total": 69,
+          "unsheltered": 67,
+          "sheltered": "Suppressed"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-121.6544, 37.1305]
+        }
+      },
+
+      {
+        "type": "Feature",
+        "properties": {
+          "city": "Mountain View",
+          "total": 879,
+          "unsheltered": 722,
+          "sheltered": 157
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-122.0839, 37.3861]
+        }
+      },
+
+      {
+        "type": "Feature",
+        "properties": {
+          "city": "Palo Alto",
+          "total": 418,
+          "unsheltered": 399,
+          "sheltered": 19
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-122.1430, 37.4419]
+        }
+      },
+
+      {
+        "type": "Feature",
+        "properties": {
+          "city": "San Jose",
+          "total": 6503,
+          "unsheltered": 3959,
+          "sheltered": 2544
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-121.8863, 37.3382]
+        }
+      },
+
+      {
+        "type": "Feature",
+        "properties": {
+          "city": "Santa Clara",
+          "total": 794,
+          "unsheltered": 711,
+          "sheltered": 83
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-121.9552, 37.3541]
+        }
+      },
+
+      {
+        "type": "Feature",
+        "properties": {
+          "city": "Saratoga",
+          "total": 19,
+          "unsheltered": 19,
+          "sheltered": 0
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-122.0230, 37.2638]
+        }
+      },
+
+      {
+        "type": "Feature",
+        "properties": {
+          "city": "Sunnyvale",
+          "total": 421,
+          "unsheltered": 328,
+          "sheltered": 93
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-122.0363, 37.3688]
+        }
+      }
+
+    ]
+  };
+  // -----------------------------
+// SHELTER LOCATION DATA
+// -----------------------------
+
+const shelterData = {
+  "type": "FeatureCollection",
+
+  "features": [
+
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "LifeMoves Mountain View",
+        "city": "Mountain View",
+        "address": "2566 Leghorn Street, Mountain View, CA 94043",
+        "type": "Interim shelter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-122.09992, 37.41984]
+      }
+    },
+
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "LifeMoves Georgia Travis House",
+        "city": "San Jose",
+        "address": "260 Commercial Street, San Jose, CA 95112",
+        "type": "Interim shelter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-121.90082, 37.36007]
+      }
+    },
+
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "LifeMoves Montgomery Street Inn",
+        "city": "San Jose",
+        "address": "358 N Montgomery Street, San Jose, CA 95110",
+        "type": "Emergency and transitional shelter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-121.90436, 37.33638]
+      }
+    },
+
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "LifeMoves Villa",
+        "city": "San Jose",
+        "address": "184 South 11th Street, San Jose, CA 95112",
+        "type": "Interim shelter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-121.87746, 37.33827]
+      }
+    },
+
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "San Jose Family Shelter",
+        "city": "San Jose",
+        "address": "692 N King Road, San Jose, CA 95133",
+        "type": "Family shelter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-121.86831, 37.36621]
+      }
+    }
+
+  ]
+};
+
+
+map.on("load", () => {
+
+  // =========================
+  // 1. ADD PIT HOMELESS DATA
+  // =========================
+
+  map.addSource("pit-counts", {
+    type: "geojson",
+    data: pitData
+  });
+
+
+  // =========================
+  // 2. DRAW RED PIT CIRCLES
+  // =========================
+
+  map.addLayer({
+    id: "pit-circles",
+    type: "circle",
+    source: "pit-counts",
+
+    paint: {
+      "circle-radius": [
+        "interpolate",
+        ["linear"],
+        ["get", "total"],
+        0, 5,
+        100, 8,
+        500, 14,
+        1000, 20,
+        3000, 28,
+        6500, 38
+      ],
+
+      "circle-color": "#d73027",
+      "circle-opacity": 0.70,
+      "circle-stroke-color": "#ffffff",
+      "circle-stroke-width": 2
+    }
+  });
+
+
+  // =========================
+  // 3. ADD SHELTER DATA
+  // =========================
+
+  map.addSource("shelters", {
+    type: "geojson",
+    data: shelterData
+  });
+
+
+  // =========================
+  // 4. DRAW BLUE SHELTER DOTS
+  // =========================
+
+  map.addLayer({
+    id: "shelter-points",
+    type: "circle",
+    source: "shelters",
+
+    paint: {
+      "circle-radius": 8,
+      "circle-color": "#2166ac",
+      "circle-stroke-color": "#ffffff",
+      "circle-stroke-width": 2
+    }
+  });
+
+
+  // =========================
+  // 5. PIT POPUP
+  // =========================
+
+  map.on("click", "pit-circles", (e) => {
+
+    const data = e.features[0].properties;
+
+    new maplibregl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(
+        `
+        <strong>${data.city}</strong>
+        <br><br>
+        <b>Total PIT Count:</b> ${Number(data.total).toLocaleString()}
+        <br>
+        Unsheltered: ${Number(data.unsheltered).toLocaleString()}
+        <br>
+        Sheltered: ${data.sheltered}
+        `
+      )
+      .addTo(map);
+
+  });
+
+
+  // =========================
+  // 6. SHELTER POPUP
+  // =========================
+
+  map.on("click", "shelter-points", (e) => {
+
+    const shelter = e.features[0].properties;
+
+    new maplibregl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(
+        `
+        <strong>${shelter.name}</strong>
+        <br><br>
+        <b>Type:</b> ${shelter.type}
+        <br>
+        <b>Address:</b> ${shelter.address}
+        `
+      )
+      .addTo(map);
+
+  });
+
+
+  // =========================
+  // 7. POINTER FOR PIT CIRCLES
+  // =========================
+
+  map.on("mouseenter", "pit-circles", () => {
+    map.getCanvas().style.cursor = "pointer";
+  });
+
+  map.on("mouseleave", "pit-circles", () => {
+    map.getCanvas().style.cursor = "";
+  });
+
+
+  // =========================
+  // 8. POINTER FOR SHELTERS
+  // =========================
+
+  map.on("mouseenter", "shelter-points", () => {
+    map.getCanvas().style.cursor = "pointer";
+  });
+
+  map.on("mouseleave", "shelter-points", () => {
+    map.getCanvas().style.cursor = "";
+  });
+
+});
 </script>
 
 </body>
