@@ -2,11 +2,11 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Homelessness and Shelter Access in Santa Clara County</title>
+  <title>Steven Homelessness Project</title>
 
   <link
     rel="stylesheet"
-    href="https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.css"
+    href="https://unpkg.com/maplibre-gl@^6.7.0/dist/maplibre-gl.css"
   />
 
   <style>
@@ -17,7 +17,6 @@
 
     h1 {
       text-align: center;
-      padding: 20px;
     }
 
     #map {
@@ -34,17 +33,19 @@
 <div id="map"></div>
 
 <script type="module">
-  import * as maplibregl
-    from "https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.mjs";
+
+  import * as maplibregl from
+    'https://unpkg.com/maplibre-gl@^6.7.0/dist/maplibre-gl.mjs';
 
   const map = new maplibregl.Map({
-    container: "map",
-    style: "https://demotiles.maplibre.org/style.json",
+    container: 'map',
+    style: 'https://demotiles.maplibre.org/style.json',
     center: [-121.90, 37.30],
     zoom: 9
   });
 
   map.addControl(new maplibregl.NavigationControl());
+
 </script>
 
 </body>
