@@ -182,197 +182,89 @@
   // -----------------------------
   // 2025 PIT COUNT DATA
   // -----------------------------
+// -----------------------------
+// CREATE DOT-DENSITY DATA
+// 1 DOT = 10 PEOPLE
+// -----------------------------
 
-  const pitData = {
+const homelessDots = {
+  type: "FeatureCollection",
+  features: []
+};
 
-  "type": "FeatureCollection",
 
-    "features": [
+// Controls how widely the dots spread around each city center
+const citySpread = {
+  "San Jose": 0.10,
+  "Gilroy": 0.055,
+  "Mountain View": 0.035,
+  "Santa Clara": 0.035,
+  "Sunnyvale": 0.035,
+  "Palo Alto": 0.035,
+  "Campbell": 0.022,
+  "Cupertino": 0.030,
+  "Milpitas": 0.030,
+  "Morgan Hill": 0.040,
+  "Los Gatos": 0.028,
+  "Saratoga": 0.028,
+  "Los Altos": 0.025
+};
 
-      {
-        "type": "Feature",
-        "properties": {
-          "city": "Campbell",
-          "total": 108,
-          "unsheltered": 108,
-          "sheltered": 0
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-121.9499, 37.2872]
-        }
+
+// Create dots for every city
+pitData.features.forEach((feature) => {
+
+  const city = feature.properties.city;
+  const total = feature.properties.total;
+
+  const centerLng = feature.geometry.coordinates[0];
+  const centerLat = feature.geometry.coordinates[1];
+
+  // One dot for every 10 people
+  const dotCount = Math.floor(total / 10);
+
+  const spread = citySpread[city] || 0.03;
+
+  // Golden-angle pattern creates an even-looking distribution
+  const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+
+  for (let i = 0; i < dotCount; i++) {
+
+    const angle = i * goldenAngle;
+
+    const radius =
+      spread * Math.sqrt((i + 1) / dotCount);
+
+    const lng =
+      centerLng +
+      Math.cos(angle) * radius;
+
+    const lat =
+      centerLat +
+      Math.sin(angle) * radius;
+
+    homelessDots.features.push({
+
+      type: "Feature",
+
+      properties: {
+        city: city,
+        total: total,
+        unsheltered: feature.properties.unsheltered,
+        sheltered: feature.properties.sheltered,
+        represents: 10
       },
 
-      {
-        "type": "Feature",
-        "properties": {
-          "city": "Cupertino",
-          "total": 101,
-          "unsheltered": 101,
-          "sheltered": 0
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-122.0322, 37.3230]
-        }
-      },
-
-      {
-        "type": "Feature",
-        "properties": {
-          "city": "Gilroy",
-          "total": 959,
-          "unsheltered": 702,
-          "sheltered": 257
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-121.5683, 37.0058]
-        }
-      },
-
-      {
-        "type": "Feature",
-        "properties": {
-          "city": "Los Altos",
-          "total": 12,
-          "unsheltered": 12,
-          "sheltered": 0
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-122.1141, 37.3852]
-        }
-      },
-
-      {
-        "type": "Feature",
-        "properties": {
-          "city": "Los Gatos",
-          "total": 27,
-          "unsheltered": 27,
-          "sheltered": 0
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-121.9624, 37.2358]
-        }
-      },
-
-      {
-        "type": "Feature",
-        "properties": {
-          "city": "Milpitas",
-          "total": 79,
-          "unsheltered": 79,
-          "sheltered": 0
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-121.8996, 37.4323]
-        }
-      },
-
-      {
-        "type": "Feature",
-        "properties": {
-          "city": "Morgan Hill",
-          "total": 69,
-          "unsheltered": 67,
-          "sheltered": "Suppressed"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-121.6544, 37.1305]
-        }
-      },
-
-      {
-        "type": "Feature",
-        "properties": {
-          "city": "Mountain View",
-          "total": 879,
-          "unsheltered": 722,
-          "sheltered": 157
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-122.0839, 37.3861]
-        }
-      },
-
-      {
-        "type": "Feature",
-        "properties": {
-          "city": "Palo Alto",
-          "total": 418,
-          "unsheltered": 399,
-          "sheltered": 19
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-122.1430, 37.4419]
-        }
-      },
-
-      {
-        "type": "Feature",
-        "properties": {
-          "city": "San Jose",
-          "total": 6503,
-          "unsheltered": 3959,
-          "sheltered": 2544
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-121.8863, 37.3382]
-        }
-      },
-
-      {
-        "type": "Feature",
-        "properties": {
-          "city": "Santa Clara",
-          "total": 794,
-          "unsheltered": 711,
-          "sheltered": 83
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-121.9552, 37.3541]
-        }
-      },
-
-      {
-        "type": "Feature",
-        "properties": {
-          "city": "Saratoga",
-          "total": 19,
-          "unsheltered": 19,
-          "sheltered": 0
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-122.0230, 37.2638]
-        }
-      },
-
-      {
-        "type": "Feature",
-        "properties": {
-          "city": "Sunnyvale",
-          "total": 421,
-          "unsheltered": 328,
-          "sheltered": 93
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-122.0363, 37.3688]
-        }
+      geometry: {
+        type: "Point",
+        coordinates: [lng, lat]
       }
 
-    ]
-  };
+    });
+
+  }
+
+});
   // -----------------------------
 // SHELTER LOCATION DATA
 // -----------------------------
@@ -458,44 +350,43 @@ const shelterData = {
 
 map.on("load", () => {
 
-  // =========================
-  // 1. ADD PIT HOMELESS DATA
-  // =========================
+// =========================
+// ADD HOMELESS DOT DATA
+// =========================
 
-  map.addSource("pit-counts", {
-    type: "geojson",
-    data: pitData
-  });
+map.addSource("homeless-dots", {
+  type: "geojson",
+  data: homelessDots
+});
 
 
-  // =========================
-  // 2. DRAW RED PIT CIRCLES
-  // =========================
+// =========================
+// DRAW HOMELESS DOTS
+// =========================
 
-  map.addLayer({
-    id: "pit-circles",
-    type: "circle",
-    source: "pit-counts",
+map.addLayer({
 
-    paint: {
-      "circle-radius": [
-        "interpolate",
-        ["linear"],
-        ["get", "total"],
-        0, 5,
-        100, 8,
-        500, 14,
-        1000, 20,
-        3000, 28,
-        6500, 38
-      ],
+  id: "homeless-dots",
 
-      "circle-color": "#d73027",
-      "circle-opacity": 0.70,
-      "circle-stroke-color": "#ffffff",
-      "circle-stroke-width": 2
-    }
-  });
+  type: "circle",
+
+  source: "homeless-dots",
+
+  paint: {
+
+    // Fixed pixel size
+    // This does NOT change when zooming
+    "circle-radius": 3.5,
+
+    "circle-color": "#d73027",
+
+    "circle-opacity": 0.65,
+
+    "circle-stroke-width": 0
+
+  }
+
+});
 
 
   // =========================
@@ -530,7 +421,7 @@ map.on("load", () => {
   // 5. PIT POPUP
   // =========================
 
-  map.on("click", "pit-circles", (e) => {
+  map.on("click", "homeless-dots", (e) => {
 
     const data = e.features[0].properties;
 
@@ -580,11 +471,11 @@ map.on("load", () => {
   // 7. POINTER FOR PIT CIRCLES
   // =========================
 
-  map.on("mouseenter", "pit-circles", () => {
+  map.on("mouseenter", "homeless-dots", () => {
     map.getCanvas().style.cursor = "pointer";
   });
 
-  map.on("mouseleave", "pit-circles", () => {
+  map.on("mouseleave", "homeless-dots", () => {
     map.getCanvas().style.cursor = "";
   });
 
