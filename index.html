@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Homelessness and Shelter Access in Santa Clara County</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Homelessness: Reported Data and AI Bias</title>
 
   <link
     rel="stylesheet"
@@ -12,114 +11,64 @@
   >
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
+      background: #f4f5f7;
       color: #222;
-      line-height: 1.6;
+      font: 16px/1.6 Arial, sans-serif;
     }
 
     header {
-      padding: 30px 40px;
       background: white;
+      padding: 30px;
       border-bottom: 1px solid #ddd;
     }
 
-    h1 {
-      margin-top: 0;
-    }
+    h1 { margin-top: 0; }
 
     main {
-      max-width: 1400px;
+      max-width: 1200px;
       margin: auto;
-      padding: 25px;
+      padding: 24px;
     }
 
-    .section {
-      padding: 25px;
-      margin-bottom: 25px;
+    section {
       background: white;
+      padding: 24px;
+      margin-bottom: 24px;
       border-radius: 8px;
     }
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 15px;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px;
     }
 
     .stat {
-      padding: 18px;
+      padding: 16px;
       background: #edf3f7;
       border-radius: 6px;
     }
 
     .stat strong {
       display: block;
-      font-size: 30px;
+      font-size: 28px;
       color: #174f76;
     }
 
-    .map-pair {
-      display: grid;
-      grid-template-columns: 1fr 1.3fr;
-      gap: 20px;
-    }
-
-    .map-panel {
-      min-width: 0;
-    }
-
-    .map {
-      height: 600px;
-      width: 100%;
-      border: 1px solid #bbb;
+    #map {
+      height: 590px;
       border-radius: 8px;
+      border: 1px solid #bbb;
       background: #e9eef0;
     }
 
-    .legend {
-      padding: 12px;
-      margin-bottom: 12px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 14px;
-      background: #fafafa;
-    }
-
-    .symbol {
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      margin-right: 6px;
-      border-radius: 50%;
-    }
-
-    .red {
-      background: #d73027;
-    }
-
-    .blue {
-      background: #2166ac;
-    }
-
-    .gray {
-      background: #777;
-    }
-
-    .source,
-    .map-status {
-      font-size: 13px;
+    .source {
       color: #555;
-    }
-
-    .map-status {
-      min-height: 24px;
+      font-size: 13px;
     }
 
     .note {
@@ -128,151 +77,117 @@
       border-left: 4px solid #2166ac;
     }
 
-    select,
-    button {
-      padding: 9px 12px;
-      margin: 6px 8px 6px 0;
+    select, button, input {
       font: inherit;
+      padding: 8px;
       border: 1px solid #aaa;
-      border-radius: 5px;
-      background: white;
+      border-radius: 4px;
     }
 
     button {
+      background: white;
       cursor: pointer;
     }
 
-    button:hover {
-      background: #edf3f7;
+    input[type="number"] {
+      width: 115px;
     }
 
-    .table-wrap {
-      overflow-x: auto;
-    }
+    .table-wrap { overflow-x: auto; }
 
     table {
-      width: 100%;
       border-collapse: collapse;
+      width: 100%;
       font-size: 14px;
     }
 
-    th,
-    td {
+    th, td {
       padding: 10px;
       border-bottom: 1px solid #ddd;
       text-align: right;
     }
 
-    thead th {
-      background: #edf3f7;
-    }
-
-    th:first-child,
-    td:first-child {
+    th:first-child, td:first-child {
       text-align: left;
     }
 
-    tbody tr:hover {
-      background: #f6f9fb;
+    thead { background: #edf3f7; }
+
+    a { color: #175b87; }
+
+    .city-label {
+      background: white;
+      border: 1px solid #aaa;
+      padding: 6px 9px;
+      font-size: 12px;
+      line-height: 1.5;
     }
 
-    .city-button {
-      padding: 0;
-      margin: 0;
-      border: none;
-      background: transparent;
-      text-align: left;
-      color: #175b87;
-      text-decoration: underline;
+    .city-label strong { color: #92251f; }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+
+    .key {
+      display: inline-block;
+      width: 13px;
+      height: 13px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    .blue { background: #2166ac; }
+    .orange { background: #c56816; }
+    .red { background: #d73027; }
+
+    .chart-row {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .chart-city {
+      font-size: 14px;
       font-weight: bold;
     }
 
-    .bar {
-      display: flex;
-      height: 25px;
-      overflow: hidden;
-      background: #ddd;
-      border-radius: 4px;
-    }
-
-    .bar-unsheltered {
-      background: #d73027;
-    }
-
-    .bar-sheltered {
-      background: #2166ac;
-    }
-
-    .reported-city-label {
-      padding: 6px 9px;
-      border: 1px solid #999;
-      border-radius: 5px;
-      background: white;
-      color: #222;
-      font-size: 12px;
-      line-height: 1.5;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    }
-
-    .reported-city-label strong {
-      color: #92251f;
+    .bar-line {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 90px;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 5px;
       font-size: 13px;
     }
 
-    .reported-popup h3 {
-      margin: 0 0 8px;
+    .track {
+      height: 15px;
+      background: #f2f3f5;
     }
 
-    .reported-popup table {
-      margin-top: 10px;
+    .bar { height: 100%; }
+
+    .bias-line {
       font-size: 12px;
+      color: #555;
     }
 
-    .reported-popup th,
-    .reported-popup td {
-      padding: 6px;
-    }
-
-    .reported-popup th {
-      text-align: left;
-    }
-
-    .map-detail-guide {
-      max-width: 230px;
-      padding: 9px;
-      background: rgba(255, 255, 255, 0.96);
-      border: 1px solid #bbb;
-      border-radius: 5px;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    a {
-      color: #175b87;
-    }
-
-    @media (max-width: 900px) {
-      .map-pair {
-        grid-template-columns: 1fr;
-      }
-    }
+    #bias-summary { margin-top: 18px; }
 
     @media (max-width: 600px) {
-      header {
-        padding: 20px;
-      }
-
-      main {
-        padding: 12px;
-      }
-
-      .section {
-        padding: 16px;
-      }
-
-      .map {
-        height: 470px;
-      }
+      main { padding: 12px; }
+      section { padding: 16px; }
+      header { padding: 20px; }
+      #map { height: 460px; }
+      .chart-row { grid-template-columns: 95px 1fr; gap: 8px; }
+      .bar-line { grid-template-columns: minmax(0, 1fr) 65px; }
     }
   </style>
 </head>
@@ -280,247 +195,196 @@
 <body>
   <header>
     <h1>Homelessness and Shelter Access in Santa Clara County</h1>
-
     <p>
-      Comparing reported city counts, shelter locations,
-      and a simulated spatial illustration.
+      Reported city counts and a comparison of AI estimates
+      with the 2025 Point-in-Time count.
     </p>
   </header>
 
   <main>
-    <section class="section">
-      <h2>Research Question</h2>
-
-      <p>
-        How does the geographic distribution of shelters compare with
-        the distribution of people experiencing homelessness across
-        cities in Santa Clara County?
-      </p>
-    </section>
-
-    <section class="section">
+    <section>
       <h2>2025 Countywide Snapshot</h2>
 
       <div class="stats">
         <div class="stat">
-          <strong>10,711</strong>
-          People counted
+          <strong>10,711</strong>People counted
         </div>
-
         <div class="stat">
-          <strong>7,472</strong>
-          Unsheltered · 69.8%
+          <strong>7,472</strong>Unsheltered · 69.8%
         </div>
-
         <div class="stat">
-          <strong>3,239</strong>
-          Sheltered · 30.2%
+          <strong>3,239</strong>Sheltered · 30.2%
         </div>
-
         <div class="stat">
-          <strong>2.31 : 1</strong>
-          Unsheltered to sheltered
+          <strong>2.31 : 1</strong>Unsheltered to sheltered
         </div>
       </div>
 
-      <p>
-        About 7 in 10 people counted were unsheltered.
-        There were approximately 2.31 unsheltered people
-        for every sheltered person.
-      </p>
-
       <p class="source">
-        January 2025 PIT snapshot, not live shelter availability.
+        January 2025 snapshot, not live shelter availability.
         <a href="https://osh.santaclaracounty.gov/2025-PIT">
-          Source: Santa Clara County PIT report
+          Source: County PIT report
         </a>.
       </p>
     </section>
 
-    <section class="section">
-      <h2>Simulated Locations vs. Reported Data</h2>
+    <section>
+      <h2>Reported Homelessness by City</h2>
 
       <p>
-        The reported-data map shows exact city totals, percentages,
-        and ratios. Select a city for detailed labels and a closer view.
+        Select a city for exact counts and ratios.
+        Circle area represents the reported total.
+        Markers are located at city centers, not individual locations.
       </p>
 
-      <div>
-        <label for="city-select">Explore a city:</label>
+      <label for="city-select">City:</label>
+      <select id="city-select">
+        <option value="">All mapped cities</option>
+      </select>
 
-        <select id="city-select">
-          <option value="">All mapped cities</option>
-        </select>
+      <button id="reset" type="button">Reset map</button>
 
-        <button id="reset-maps" type="button">
-          Reset maps
-        </button>
+      <div class="legend">
+        <span><i class="key red"></i>Reported city total</span>
+        <span><i class="key blue"></i>Selected shelter site</span>
       </div>
 
-      <div class="map-pair">
-        <section class="map-panel">
-          <h3>Simulated locations—not observed</h3>
+      <div id="map" aria-label="Reported homelessness by city"></div>
+      <p id="map-status" class="source" role="status">Loading map…</p>
+      <div id="city-detail" aria-live="polite"></div>
 
-          <p>
-            An AI-created illustration spreads dots around city centers.
-            The totals are reported data, but dot positions are invented.
-            This is not a trained model's prediction.
-          </p>
+      <p class="source">
+        Five shelter sites are shown as a partial sample.
+        An absent marker does not mean a city has no shelters.
+      </p>
+    </section>
 
-          <div class="legend">
-            <div>
-              <span class="symbol gray"></span>
-              Each gray dot represents up to 10 people.
-            </div>
-            <div>
-              <span class="symbol blue"></span>
-              Selected shelter location.
-            </div>
-          </div>
+    <section>
+      <h2>AI Estimates vs. Reported Counts</h2>
 
-          <div
-            id="illustration-map"
-            class="map"
-            aria-label="Simulated locations using reported city totals"
-          ></div>
-
-          <p
-            id="illustration-status"
-            class="map-status"
-            role="status"
-          >
-            Loading map…
-          </p>
-        </section>
-
-        <section class="map-panel">
-          <h3>Reported data · 2025 PIT</h3>
-
-          <p>
-            City labels show reported counts. Zoom in or select a city
-            to see sheltered and unsheltered figures and their ratio.
-            Circles are placed at city centers.
-          </p>
-
-          <div class="legend">
-            <div>
-              <span class="symbol red"></span>
-              Circle area represents the city's total PIT count.
-            </div>
-            <div>
-              <span class="symbol blue"></span>
-              Selected shelter location.
-            </div>
-          </div>
-
-          <div
-            id="reported-map"
-            class="map"
-            aria-label="Reported homelessness counts by city"
-          ></div>
-
-          <p
-            id="reported-status"
-            class="map-status"
-            role="status"
-          >
-            Loading map…
-          </p>
-        </section>
-      </div>
+      <p>
+        Blue bars show reported 2025 PIT totals.
+        Orange bars show the AI estimates you enter below.
+        Both use the same scale, starting at zero.
+      </p>
 
       <p class="note">
-        <strong>Interpretation:</strong>
-        The simulated dots can imply precise locations or clusters
-        that are not supported by the source. The reported map shows
-        city-level evidence, not individual locations. Blue markers
-        are a partial sample of five shelter sites.
+        <strong>No AI estimates have been supplied yet.</strong>
+        The previous simulated map reused the real city totals and
+        invented dot positions, so it cannot provide independent
+        predictions for a bias comparison. Enter estimates for the
+        same cities, year, and definition of homelessness.
       </p>
-    </section>
 
-    <section class="section">
-      <h2>Selected Area: Counts and Ratios</h2>
-      <div id="city-detail" aria-live="polite"></div>
-    </section>
+      <details>
+        <summary><strong>Enter AI estimates</strong></summary>
 
-    <section class="section">
-      <h2>City Data and Ratios</h2>
+        <p class="source">
+          Leave unknown estimates blank. Zero means the AI estimated
+          zero people. Entries stay on this page until it is reloaded.
+        </p>
 
-      <p>
-        Click a city name to focus both maps.
-        U:S means unsheltered people divided by sheltered people,
-        not people per available shelter bed.
-      </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Reported total</th>
+                <th>AI estimate</th>
+              </tr>
+            </thead>
+            <tbody id="ai-inputs"></tbody>
+          </table>
+        </div>
+
+        <button id="clear-ai" type="button">Clear AI estimates</button>
+      </details>
+
+      <div class="legend">
+        <span><i class="key blue"></i>Reported PIT count</span>
+        <span><i class="key orange"></i>AI estimate</span>
+      </div>
+
+      <p id="chart-scale" class="source"></p>
 
       <div
-        class="table-wrap"
-        role="region"
-        aria-label="City comparison table"
-        tabindex="0"
-      >
+        id="comparison-chart"
+        role="figure"
+        aria-label="AI estimates compared with reported city counts"
+      ></div>
+
+      <div id="bias-summary" class="note" aria-live="polite"></div>
+
+      <p class="source">
+        Signed error = AI estimate − reported count.
+        Percentage error = signed error ÷ reported count × 100.
+        Positive values indicate overestimation; negative values indicate
+        underestimation. These measure prediction error against the PIT
+        benchmark, not proof of social bias or an exact count of everyone.
+      </p>
+    </section>
+
+    <section>
+      <h2>City Data and Ratios</h2>
+
+      <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th scope="col">City</th>
-              <th scope="col">Total</th>
-              <th scope="col">Unsheltered</th>
-              <th scope="col">Sheltered</th>
-              <th scope="col">Unsheltered %</th>
-              <th scope="col">U:S ratio</th>
-              <th scope="col">County share</th>
-              <th scope="col">Mapped sites*</th>
+              <th>City</th>
+              <th>Total</th>
+              <th>Unsheltered</th>
+              <th>Sheltered</th>
+              <th>Unsheltered %</th>
+              <th>U:S ratio</th>
             </tr>
           </thead>
-
           <tbody id="city-table"></tbody>
         </table>
       </div>
 
       <p class="source">
-        *Only the five sites in this project's sample.
-        Zero mapped sites does not mean a city has no shelters.
-        Ratios with zero sheltered people are undefined.
+        U:S is unsheltered people divided by sheltered people.
+        It does not measure people per available bed.
         Suppressed values are not estimated.
       </p>
     </section>
 
-    <section class="section">
-      <h2>What the Data Shows</h2>
+    <section>
+      <h2>Analysis</h2>
 
       <p>
-        <strong>San Jose has the largest count.</strong>
-        Its 6,503 people represent 60.7% of the county total.
-        Its unsheltered rate is 60.9%, compared with 69.8% countywide.
-        Its 3,959 unsheltered people are still the largest absolute
-        count among the cities shown.
+        <strong>San Jose has the largest reported count:</strong>
+        6,503 people, or 60.7% of the county total.
+        Its 3,959 unsheltered people are the largest absolute
+        unsheltered count among the cities shown.
       </p>
 
       <p>
-        <strong>Palo Alto has a high unsheltered share.</strong>
-        Of 418 people counted, 399 (95.5%) were unsheltered and
-        19 were sheltered: a 21.00:1 ratio.
-        Mountain View's ratio is 4.60:1, and Santa Clara's is 8.57:1.
-        These figures describe where people were counted,
-        but do not establish why people lacked shelter.
+        <strong>Palo Alto has a high unsheltered share:</strong>
+        399 of 418 people, or 95.5%, were unsheltered.
+        Its unsheltered-to-sheltered ratio is 21.00:1,
+        compared with 4.60:1 in Mountain View.
       </p>
 
       <p>
-        <strong>Percentages and counts answer different questions.</strong>
-        Campbell reports 108 people, all unsheltered.
-        San Jose has a lower unsheltered percentage but a much larger
-        number of unsheltered people. Planning should consider both.
+        <strong>Evaluate AI errors in both people and percentages.</strong>
+        A large city can have a large numerical error but a smaller
+        percentage error. Percentage errors help compare cities
+        with different reported totals.
       </p>
 
       <p>
-        <strong>The shelter sample cannot establish adequate access.</strong>
-        Four mapped sites are in San Jose and one is in Mountain View.
-        A complete inventory, bed capacities, occupancy, eligibility,
-        and travel times are needed to assess whether resources match need.
+        <strong>Look for repeated patterns.</strong>
+        Consistent underestimation or overestimation across comparable
+        predictions may indicate systematic error. A single comparison
+        does not establish its cause. Record the AI model, prompt,
+        run date, and whether it had access to the PIT report.
       </p>
     </section>
 
-    <section class="section">
-      <h2>Sources and Methods</h2>
+    <section>
+      <h2>Sources and Limitations</h2>
 
       <p>
         <a
@@ -528,427 +392,318 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          2025 Santa Clara County Point-in-Time report
+          2025 Santa Clara County PIT report
         </a>
-        — countywide figures and jurisdiction table, page 18.
+        — jurisdiction table, page 18.
       </p>
 
       <p>
-        Shelter names, addresses, and coordinates come from the supplied
-        project. Their current operation has not been independently verified.
-      </p>
-
-      <p>
-        The 13 mapped city totals sum to 10,389. The county total of
-        10,711 also includes unincorporated areas, confidential locations,
+        The 13 mapped cities total 10,389 people. The county total
+        also includes unincorporated areas, confidential locations,
         and suppressed city counts. Confidential locations are not mapped.
-        Morgan Hill's sheltered count remains suppressed.
       </p>
 
-      <ul>
-        <li>Unsheltered % = unsheltered ÷ total × 100.</li>
-        <li>Sheltered % = sheltered ÷ total × 100.</li>
-        <li>U:S ratio = unsheltered ÷ sheltered.</li>
-        <li>County share = city total ÷ 10,711 × 100.</li>
-      </ul>
-
-      <p class="source">
-        Percentages use one decimal place; ratios use two.
-        Sheltered counts measure people, not bed capacity.
-        PIT is a snapshot and does not establish causation.
+      <p>
+        Shelter names and coordinates are retained from the supplied
+        project. Current operation has not been verified.
+        A complete inventory, capacity, eligibility, occupancy, and
+        travel data are needed to evaluate shelter access.
       </p>
     </section>
   </main>
 
   <script>
-    // DATA: Leaflet uses [latitude, longitude].
-
-    const county = {
-      city: "Santa Clara County",
-      total: 10711,
-      unsheltered: 7472,
-      sheltered: 3239
-    };
-
     const cities = [
-      {
-        city: "Campbell",
-        total: 108,
-        unsheltered: 108,
-        sheltered: 0,
-        lat: 37.2872,
-        lng: -121.9499,
-        spread: 0.022
-      },
-      {
-        city: "Cupertino",
-        total: 101,
-        unsheltered: 101,
-        sheltered: 0,
-        lat: 37.3230,
-        lng: -122.0322,
-        spread: 0.030
-      },
-      {
-        city: "Gilroy",
-        total: 959,
-        unsheltered: 702,
-        sheltered: 257,
-        lat: 37.0058,
-        lng: -121.5683,
-        spread: 0.055
-      },
-      {
-        city: "Los Altos",
-        total: 12,
-        unsheltered: 12,
-        sheltered: 0,
-        lat: 37.3852,
-        lng: -122.1141,
-        spread: 0.025
-      },
-      {
-        city: "Los Gatos",
-        total: 27,
-        unsheltered: 27,
-        sheltered: 0,
-        lat: 37.2358,
-        lng: -121.9624,
-        spread: 0.028
-      },
-      {
-        city: "Milpitas",
-        total: 79,
-        unsheltered: 79,
-        sheltered: 0,
-        lat: 37.4323,
-        lng: -121.8996,
-        spread: 0.030
-      },
-      {
-        city: "Morgan Hill",
-        total: 69,
-        unsheltered: 67,
-        sheltered: "Suppressed",
-        lat: 37.1305,
-        lng: -121.6544,
-        spread: 0.040
-      },
-      {
-        city: "Mountain View",
-        total: 879,
-        unsheltered: 722,
-        sheltered: 157,
-        lat: 37.3861,
-        lng: -122.0839,
-        spread: 0.035
-      },
-      {
-        city: "Palo Alto",
-        total: 418,
-        unsheltered: 399,
-        sheltered: 19,
-        lat: 37.4419,
-        lng: -122.1430,
-        spread: 0.035
-      },
-      {
-        city: "San Jose",
-        total: 6503,
-        unsheltered: 3959,
-        sheltered: 2544,
-        lat: 37.3382,
-        lng: -121.8863,
-        spread: 0.100
-      },
-      {
-        city: "Santa Clara",
-        total: 794,
-        unsheltered: 711,
-        sheltered: 83,
-        lat: 37.3541,
-        lng: -121.9552,
-        spread: 0.035
-      },
-      {
-        city: "Saratoga",
-        total: 19,
-        unsheltered: 19,
-        sheltered: 0,
-        lat: 37.2638,
-        lng: -122.0230,
-        spread: 0.028
-      },
-      {
-        city: "Sunnyvale",
-        total: 421,
-        unsheltered: 328,
-        sheltered: 93,
-        lat: 37.3688,
-        lng: -122.0363,
-        spread: 0.035
-      }
+      { city: "San Jose", total: 6503, unsheltered: 3959, sheltered: 2544, lat: 37.3382, lng: -121.8863 },
+      { city: "Gilroy", total: 959, unsheltered: 702, sheltered: 257, lat: 37.0058, lng: -121.5683 },
+      { city: "Mountain View", total: 879, unsheltered: 722, sheltered: 157, lat: 37.3861, lng: -122.0839 },
+      { city: "Santa Clara", total: 794, unsheltered: 711, sheltered: 83, lat: 37.3541, lng: -121.9552 },
+      { city: "Sunnyvale", total: 421, unsheltered: 328, sheltered: 93, lat: 37.3688, lng: -122.0363 },
+      { city: "Palo Alto", total: 418, unsheltered: 399, sheltered: 19, lat: 37.4419, lng: -122.1430 },
+      { city: "Campbell", total: 108, unsheltered: 108, sheltered: 0, lat: 37.2872, lng: -121.9499 },
+      { city: "Cupertino", total: 101, unsheltered: 101, sheltered: 0, lat: 37.3230, lng: -122.0322 },
+      { city: "Milpitas", total: 79, unsheltered: 79, sheltered: 0, lat: 37.4323, lng: -121.8996 },
+      { city: "Morgan Hill", total: 69, unsheltered: 67, sheltered: "Suppressed", lat: 37.1305, lng: -121.6544 },
+      { city: "Los Gatos", total: 27, unsheltered: 27, sheltered: 0, lat: 37.2358, lng: -121.9624 },
+      { city: "Saratoga", total: 19, unsheltered: 19, sheltered: 0, lat: 37.2638, lng: -122.0230 },
+      { city: "Los Altos", total: 12, unsheltered: 12, sheltered: 0, lat: 37.3852, lng: -122.1141 }
     ];
 
     const shelters = [
-      {
-        name: "LifeMoves Mountain View",
-        city: "Mountain View",
-        address: "2566 Leghorn Street, Mountain View, CA 94043",
-        type: "Interim shelter",
-        lat: 37.41984,
-        lng: -122.09992
-      },
-      {
-        name: "LifeMoves Georgia Travis House",
-        city: "San Jose",
-        address: "260 Commercial Street, San Jose, CA 95112",
-        type: "Interim shelter",
-        lat: 37.36007,
-        lng: -121.90082
-      },
-      {
-        name: "LifeMoves Montgomery Street Inn",
-        city: "San Jose",
-        address: "358 N Montgomery Street, San Jose, CA 95110",
-        type: "Emergency and transitional shelter",
-        lat: 37.33638,
-        lng: -121.90436
-      },
-      {
-        name: "LifeMoves Villa",
-        city: "San Jose",
-        address: "184 South 11th Street, San Jose, CA 95112",
-        type: "Interim shelter",
-        lat: 37.33827,
-        lng: -121.87746
-      },
-      {
-        name: "San Jose Family Shelter",
-        city: "San Jose",
-        address: "692 N King Road, San Jose, CA 95133",
-        type: "Family shelter",
-        lat: 37.36621,
-        lng: -121.86831
-      }
+      { name: "LifeMoves Mountain View", address: "2566 Leghorn Street, Mountain View", lat: 37.41984, lng: -122.09992 },
+      { name: "LifeMoves Georgia Travis House", address: "260 Commercial Street, San Jose", lat: 37.36007, lng: -121.90082 },
+      { name: "LifeMoves Montgomery Street Inn", address: "358 N Montgomery Street, San Jose", lat: 37.33638, lng: -121.90436 },
+      { name: "LifeMoves Villa", address: "184 South 11th Street, San Jose", lat: 37.33827, lng: -121.87746 },
+      { name: "San Jose Family Shelter", address: "692 N King Road, San Jose", lat: 37.36621, lng: -121.86831 }
     ];
 
-    const sortedCities = [...cities].sort(
-      (a, b) => b.total - a.total
-    );
-
-    const citySelect = document.getElementById("city-select");
-
-    let illustrationMap;
-    let reportedMap;
-
-    const reportedLabels = [];
-    const reportedMarkers = new Map();
-
-    const countyBounds = [
-      [36.94, -122.22],
-      [37.51, -121.48]
-    ];
-
-    // FORMATTING
-
-    function formatNumber(value) {
-      return typeof value === "number"
-        ? value.toLocaleString("en-US")
+    const fmt = value =>
+      typeof value === "number"
+        ? value.toLocaleString("en-US", { maximumFractionDigits: 1 })
         : value;
-    }
 
-    function percentage(value, total) {
-      return ((value / total) * 100).toFixed(1) + "%";
-    }
+    const pct = (value, total) =>
+      (100 * value / total).toFixed(1) + "%";
 
-    function ratio(data) {
-      if (typeof data.sheltered !== "number") {
-        return "Suppressed";
-      }
+    const ratio = city =>
+      typeof city.sheltered !== "number"
+        ? "Suppressed"
+        : city.sheltered === 0
+          ? "Undefined (0 sheltered)"
+          : (city.unsheltered / city.sheltered).toFixed(2) + " : 1";
 
-      if (data.sheltered === 0) {
-        return "Undefined (0 sheltered)";
-      }
+    const signed = value =>
+      (value > 0 ? "+" : "") + fmt(value);
 
-      return (
-        (data.unsheltered / data.sheltered).toFixed(2) + " : 1"
-      );
-    }
+    const select = document.getElementById("city-select");
 
-    function mappedShelters(city) {
-      return shelters.filter(
-        shelter => shelter.city === city
-      ).length;
-    }
-
-    // TABLE AND SELECTOR
+    cities.forEach((city, index) => {
+      const option = document.createElement("option");
+      option.value = String(index);
+      option.textContent = city.city;
+      select.appendChild(option);
+    });
 
     document.getElementById("city-table").innerHTML =
-      sortedCities.map(city => `
+      cities.map(city => `
         <tr>
-          <th scope="row">
-            <button
-              type="button"
-              class="city-button"
-              data-city="${city.city}"
-            >
-              ${city.city}
-            </button>
-          </th>
-          <td>${formatNumber(city.total)}</td>
-          <td>${formatNumber(city.unsheltered)}</td>
-          <td>${formatNumber(city.sheltered)}</td>
-          <td>${percentage(city.unsheltered, city.total)}</td>
+          <th scope="row">${city.city}</th>
+          <td>${fmt(city.total)}</td>
+          <td>${fmt(city.unsheltered)}</td>
+          <td>${fmt(city.sheltered)}</td>
+          <td>${pct(city.unsheltered, city.total)}</td>
           <td>${ratio(city)}</td>
-          <td>${percentage(city.total, county.total)}</td>
-          <td>${mappedShelters(city.city)}</td>
         </tr>
       `).join("");
 
-    sortedCities.forEach(city => {
-      const option = document.createElement("option");
-      option.value = city.city;
-      option.textContent = city.city;
-      citySelect.appendChild(option);
-    });
+    // AI estimates are deliberately blank until supplied.
+    const estimates = Array(cities.length).fill(null);
 
-    // DETAIL PANEL
+    document.getElementById("ai-inputs").innerHTML =
+      cities.map((city, index) => `
+        <tr>
+          <th scope="row">${city.city}</th>
+          <td>${fmt(city.total)}</td>
+          <td>
+            <input
+              type="number"
+              min="0"
+              step="1"
+              data-index="${index}"
+              aria-label="AI estimate for ${city.city}"
+              placeholder="Not entered"
+            >
+          </td>
+        </tr>
+      `).join("");
 
-    function renderDetails(data) {
-      const known = typeof data.sheltered === "number";
+    function updateChart() {
+      const maximum = Math.max(
+        ...cities.map(city => city.total),
+        ...estimates.filter(value => value !== null)
+      );
 
-      const shelteredText = known
-        ? `${formatNumber(data.sheltered)}
-           (${percentage(data.sheltered, data.total)})`
-        : "Suppressed";
+      document.getElementById("chart-scale").textContent =
+        `Shared bar scale: 0 to ${fmt(maximum)} people.`;
 
-      document.getElementById("city-detail").innerHTML = `
-        <h3>${data.city}</h3>
+      document.getElementById("comparison-chart").innerHTML =
+        cities.map((city, index) => {
+          const estimate = estimates[index];
+          const error = estimate === null ? null : estimate - city.total;
 
-        <p>
-          <strong>${formatNumber(data.total)}</strong>
-          people counted
-        </p>
+          return `
+            <div class="chart-row">
+              <div class="chart-city">${city.city}</div>
+              <div>
+                <div class="bar-line">
+                  <div class="track">
+                    <div
+                      class="bar blue"
+                      style="width:${100 * city.total / maximum}%"
+                    ></div>
+                  </div>
+                  <span>${fmt(city.total)}</span>
+                </div>
 
-        <p>
-          Unsheltered:
-          <strong>
-            ${formatNumber(data.unsheltered)}
-            (${percentage(data.unsheltered, data.total)})
-          </strong>
-          <br>
-
-          Sheltered:
-          <strong>${shelteredText}</strong>
-          <br>
-
-          Unsheltered-to-sheltered ratio:
-          <strong>${ratio(data)}</strong>
-        </p>
-
-        ${
-          known
-            ? `
-              <div
-                class="bar"
-                role="img"
-                aria-label="${percentage(data.unsheltered, data.total)}
-                  unsheltered;
-                  ${percentage(data.sheltered, data.total)} sheltered"
-              >
-                <span
-                  class="bar-unsheltered"
-                  style="width:${data.unsheltered / data.total * 100}%"
-                ></span>
-                <span
-                  class="bar-sheltered"
-                  style="width:${data.sheltered / data.total * 100}%"
-                ></span>
+                ${
+                  estimate === null
+                    ? `<div class="bias-line">AI estimate not entered</div>`
+                    : `
+                      <div class="bar-line">
+                        <div class="track">
+                          <div
+                            class="bar orange"
+                            style="width:${100 * estimate / maximum}%"
+                          ></div>
+                        </div>
+                        <span>${fmt(estimate)}</span>
+                      </div>
+                      <div class="bias-line">
+                        Error: ${signed(error)} people
+                        (${error > 0 ? "+" : ""}${pct(error, city.total)})
+                      </div>
+                    `
+                }
               </div>
+            </div>
+          `;
+        }).join("");
 
-              <p class="source">
-                Red: unsheltered · Blue: sheltered
-              </p>
-            `
-            : `
-              <p class="source">
-                Sheltered value suppressed in the source.
-                No sheltered percentage or ratio is calculated.
-              </p>
-            `
-        }
-      `;
-    }
+      const pairs = cities
+        .map((city, index) => ({ ...city, estimate: estimates[index] }))
+        .filter(city => city.estimate !== null);
 
-    renderDetails(county);
+      const summary = document.getElementById("bias-summary");
 
-    function resetMaps() {
-      if (illustrationMap) {
-        illustrationMap.closePopup();
-        illustrationMap.fitBounds(countyBounds);
-      }
-
-      if (reportedMap) {
-        reportedMap.closePopup();
-        reportedMap.fitBounds(countyBounds);
-        updateReportedLabels();
-      }
-    }
-
-    function selectCity(name, openPopup = false) {
-      citySelect.value = name;
-
-      const city = cities.find(item => item.city === name);
-
-      if (!city) {
-        renderDetails(county);
-        resetMaps();
+      if (!pairs.length) {
+        summary.textContent =
+          "Bias analysis is waiting for AI estimates. " +
+          "The graph currently shows only reported counts.";
         return;
       }
 
-      renderDetails(city);
+      const errors = pairs.map(city => city.estimate - city.total);
+      const meanError = errors.reduce((a, b) => a + b, 0) / pairs.length;
+      const mae = errors.reduce((a, b) => a + Math.abs(b), 0) / pairs.length;
 
-      if (illustrationMap) {
-        illustrationMap.setView([city.lat, city.lng], 12);
-      }
+      const mape = pairs.reduce(
+        (sum, city) =>
+          sum + Math.abs(city.estimate - city.total) / city.total * 100,
+        0
+      ) / pairs.length;
 
-      if (reportedMap) {
-        reportedMap.setView([city.lat, city.lng], 12);
-        updateReportedLabels();
+      const over = errors.filter(error => error > 0).length;
+      const under = errors.filter(error => error < 0).length;
+      const equal = errors.filter(error => error === 0).length;
 
-        if (openPopup) {
-          reportedMarkers.get(city.city)?.openPopup();
-        }
-      }
+      summary.innerHTML = `
+        <strong>Comparison for ${pairs.length} of ${cities.length} cities</strong>
+        <p>
+          Mean signed error: <b>${signed(meanError)} people per city</b><br>
+          Mean absolute error: <b>${fmt(mae)} people per city</b><br>
+          Mean absolute percentage error: <b>${mape.toFixed(1)}%</b>
+        </p>
+        <p>
+          Overestimated: ${over} · Underestimated: ${under} ·
+          Exact matches: ${equal}
+        </p>
+        <p class="source">
+          Only cities with entered estimates are included.
+          Positive and negative errors can cancel in the mean signed
+          error; absolute error measures the size of mistakes.
+        </p>
+      `;
     }
 
-    citySelect.addEventListener("change", () => {
-      selectCity(citySelect.value);
+    document.getElementById("ai-inputs").addEventListener("input", event => {
+      const input = event.target;
+      if (!input.matches("[data-index]")) return;
+
+      const value = input.valueAsNumber;
+      const valid =
+        input.value.trim() !== "" &&
+        Number.isFinite(value) &&
+        value >= 0 &&
+        Number.isInteger(value);
+
+      estimates[Number(input.dataset.index)] = valid ? value : null;
+      input.setAttribute(
+        "aria-invalid",
+        input.value !== "" && !valid ? "true" : "false"
+      );
+
+      updateChart();
     });
 
-    document.getElementById("reset-maps").addEventListener(
-      "click",
-      () => selectCity("")
-    );
+    document.getElementById("clear-ai").addEventListener("click", () => {
+      estimates.fill(null);
 
-    document.getElementById("city-table").addEventListener(
-      "click",
-      event => {
-        const button = event.target.closest("[data-city]");
+      document.querySelectorAll("#ai-inputs input").forEach(input => {
+        input.value = "";
+        input.removeAttribute("aria-invalid");
+      });
 
-        if (!button) return;
+      updateChart();
+    });
 
-        selectCity(button.dataset.city, true);
+    updateChart();
 
-        document.getElementById("reported-map").scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
+    // REPORTED-DATA MAP
+    let map;
+    const labels = [];
+    const bounds = [[36.94, -122.22], [37.51, -121.48]];
+
+    function details(city) {
+      return `
+        <h3>${city.city}</h3>
+        <p>
+          Total: <strong>${fmt(city.total)}</strong><br>
+          Unsheltered:
+          <strong>${fmt(city.unsheltered)}
+          (${pct(city.unsheltered, city.total)})</strong><br>
+          Sheltered: <strong>${fmt(city.sheltered)}</strong><br>
+          U:S ratio: <strong>${ratio(city)}</strong><br>
+          County share: <strong>${pct(city.total, 10711)}</strong>
+        </p>
+      `;
+    }
+
+    function updateLabels() {
+      if (!map) return;
+
+      labels.forEach(({ city, index, label }) => {
+        const selected = select.value === String(index);
+        const visible = selected || map.getZoom() >= 11 || city.total >= 800;
+        const detailed = selected || map.getZoom() >= 12;
+
+        if (!visible) {
+          if (map.hasLayer(label)) map.removeLayer(label);
+          return;
+        }
+
+        label.setContent(
+          detailed
+            ? `
+              <strong>${city.city}</strong><br>
+              Total: ${fmt(city.total)}<br>
+              Unsheltered: ${fmt(city.unsheltered)}
+              (${pct(city.unsheltered, city.total)})<br>
+              Sheltered: ${fmt(city.sheltered)}<br>
+              U:S: ${ratio(city)}
+            `
+            : `<strong>${city.city}</strong><br>${fmt(city.total)} people`
+        );
+
+        if (!map.hasLayer(label)) label.addTo(map);
+      });
+    }
+
+    function applySelection() {
+      if (select.value === "") {
+        document.getElementById("city-detail").innerHTML =
+          "<p>Select a city to see its counts and ratios.</p>";
+
+        if (map) {
+          map.closePopup();
+          map.fitBounds(bounds);
+        }
+      } else {
+        const city = cities[Number(select.value)];
+        document.getElementById("city-detail").innerHTML = details(city);
+        if (map) map.setView([city.lat, city.lng], 12);
       }
-    );
 
-    // LIBRARY LOADING
+      updateLabels();
+    }
+
+    select.addEventListener("change", applySelection);
+
+    document.getElementById("reset").addEventListener("click", () => {
+      select.value = "";
+      applySelection();
+    });
+
+    applySelection();
 
     function loadScript(url) {
       return new Promise((resolve, reject) => {
@@ -960,153 +715,9 @@
       });
     }
 
-    // BASEMAPS
+    async function startMap() {
+      const status = document.getElementById("map-status");
 
-    function addBasemap(map, statusId) {
-      const status = document.getElementById(statusId);
-      let usingFallback = false;
-
-      const primary = L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
-        {
-          maxZoom: 19,
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">' +
-            'OpenStreetMap</a> contributors &copy; ' +
-            '<a href="https://carto.com/attributions">CARTO</a>'
-        }
-      );
-
-      primary.on("load", () => {
-        if (!usingFallback) {
-          status.textContent =
-            "Click a circle or shelter for details.";
-        }
-      });
-
-      primary.on("tileerror", () => {
-        if (usingFallback) return;
-
-        usingFallback = true;
-        map.removeLayer(primary);
-
-        status.textContent =
-          "Trying an alternate background map…";
-
-        let fallbackFailed = false;
-
-        const fallback = L.tileLayer(
-          "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-          {
-            maxZoom: 19,
-            attribution:
-              '&copy; <a href="https://www.openstreetmap.org/copyright">' +
-              "OpenStreetMap</a> contributors"
-          }
-        );
-
-        fallback.on("tileerror", () => {
-          fallbackFailed = true;
-          status.textContent =
-            "Some map tiles could not load. Check your connection.";
-        });
-
-        fallback.on("load", () => {
-          if (!fallbackFailed) {
-            status.textContent =
-              "Click a circle or shelter for details.";
-          }
-        });
-
-        fallback.addTo(map);
-      });
-
-      primary.addTo(map);
-    }
-
-    // SHELTERS: SAME SAMPLE ON BOTH MAPS
-
-    function addShelters(map) {
-      shelters.forEach(shelter => {
-        L.circleMarker([shelter.lat, shelter.lng], {
-          pane: "shelterPane",
-          radius: 8,
-          color: "#fff",
-          weight: 2,
-          fillColor: "#2166ac",
-          fillOpacity: 1
-        })
-          .bindTooltip(shelter.name)
-          .bindPopup(`
-            <strong>${shelter.name}</strong>
-
-            <p>
-              ${shelter.type}
-              <br>
-              ${shelter.address}
-            </p>
-
-            <small>
-              Selected site from the five-shelter project sample.
-              Current operation has not been verified.
-            </small>
-          `)
-          .addTo(map);
-      });
-    }
-
-    // PERMANENT LABELS ON REPORTED MAP
-
-    function updateReportedLabels() {
-      if (!reportedMap) return;
-
-      const zoom = reportedMap.getZoom();
-      const selected = citySelect.value;
-
-      reportedLabels.forEach(({ city, label }) => {
-        const visible =
-          city.city === selected ||
-          zoom >= 11 ||
-          city.total >= 800;
-
-        if (!visible) {
-          if (reportedMap.hasLayer(label)) {
-            reportedMap.removeLayer(label);
-          }
-          return;
-        }
-
-        // Show a full label for the selected city.
-        // At close zoom, show full labels for all cities.
-        const detailed =
-          city.city === selected || zoom >= 12;
-
-        label.setContent(
-          detailed
-            ? `
-              <strong>${city.city}</strong><br>
-              Total: <b>${formatNumber(city.total)}</b><br>
-              Unsheltered:
-              ${formatNumber(city.unsheltered)}
-              (${percentage(city.unsheltered, city.total)})<br>
-              Sheltered: ${formatNumber(city.sheltered)}<br>
-              U:S: ${ratio(city)}
-            `
-            : `
-              <strong>${city.city}</strong><br>
-              ${formatNumber(city.total)} people
-            `
-        );
-
-        if (!reportedMap.hasLayer(label)) {
-          label.addTo(reportedMap);
-        }
-      });
-    }
-
-    // INITIALIZE MAPS
-
-    async function initializeMaps() {
       try {
         try {
           await loadScript(
@@ -1118,243 +729,143 @@
           );
         }
 
-        illustrationMap = L.map("illustration-map", {
-          scrollWheelZoom: false
-        });
+        map = L.map("map", { scrollWheelZoom: false });
+        map.fitBounds(bounds);
+        map.createPane("shelters");
+        map.getPane("shelters").style.zIndex = 450;
 
-        reportedMap = L.map("reported-map", {
-          scrollWheelZoom: false
-        });
+        let switched = false;
 
-        [illustrationMap, reportedMap].forEach(map => {
-          map.createPane("shelterPane");
-          map.getPane("shelterPane").style.zIndex = 450;
-        });
+        const tiles = L.tileLayer(
+          "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+          {
+            maxZoom: 19,
+            attribution:
+              '&copy; <a href="https://www.openstreetmap.org/copyright">' +
+              'OpenStreetMap</a> contributors &copy; ' +
+              '<a href="https://carto.com/attributions">CARTO</a>'
+          }
+        );
 
-        resetMaps();
-
-        addBasemap(illustrationMap, "illustration-status");
-        addBasemap(reportedMap, "reported-status");
-
-        // SIMULATED MAP
-        // Positions are geometric illustrations, not observations.
-
-        const goldenAngle = Math.PI * (3 - Math.sqrt(5));
-        const renderer = L.canvas({ padding: 0.5 });
-
-        cities.forEach(city => {
-          const dotCount = Math.ceil(city.total / 10);
-
-          for (let i = 0; i < dotCount; i++) {
-            const angle = i * goldenAngle;
-            const distance =
-              city.spread * Math.sqrt((i + 1) / dotCount);
-
-            const lat =
-              city.lat + Math.sin(angle) * distance;
-
-            const lng =
-              city.lng + Math.cos(angle) * distance;
-
-            const represented = Math.min(
-              10,
-              city.total - i * 10
-            );
-
-            L.circleMarker([lat, lng], {
-              renderer,
-              radius: 3,
-              stroke: false,
-              fillColor: "#777",
-              fillOpacity: 0.45
-            })
-              .bindPopup(`
-                <strong>${city.city} · simulated position</strong>
-
-                <p>
-                  Reported city total: ${formatNumber(city.total)}
-                  <br>
-                  This dot represents ${represented} people.
-                </p>
-
-                <small>
-                  The dot's location is invented.
-                  It does not identify where people were counted.
-                </small>
-              `)
-              .addTo(illustrationMap);
+        tiles.on("load", () => {
+          if (!switched) {
+            status.textContent =
+              "Select a city or click a circle for details.";
           }
         });
 
-        // REPORTED MAP
-        // Largest circles first, so smaller circles remain clickable.
+        tiles.on("tileerror", () => {
+          if (switched) return;
+          switched = true;
+          map.removeLayer(tiles);
 
-        sortedCities.forEach(city => {
-          const marker = L.circleMarker(
-            [city.lat, city.lng],
+          let failed = false;
+          status.textContent = "Trying alternate map tiles…";
+
+          const fallback = L.tileLayer(
+            "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
             {
-              radius: Math.sqrt(city.total) * 0.48,
-              color: "#92251f",
-              weight: 2,
-              fillColor: "#d73027",
-              fillOpacity: 0.25
+              maxZoom: 19,
+              attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">' +
+                "OpenStreetMap</a> contributors"
             }
-          ).addTo(reportedMap);
+          );
 
-          reportedMarkers.set(city.city, marker);
-
-          marker.bindPopup(`
-            <div class="reported-popup">
-              <h3>${city.city}</h3>
-
-              <strong>2025 reported PIT count</strong>
-
-              <table>
-                <tr>
-                  <th>Total people</th>
-                  <td>${formatNumber(city.total)}</td>
-                </tr>
-                <tr>
-                  <th>Unsheltered</th>
-                  <td>${formatNumber(city.unsheltered)}</td>
-                </tr>
-                <tr>
-                  <th>Sheltered</th>
-                  <td>${formatNumber(city.sheltered)}</td>
-                </tr>
-                <tr>
-                  <th>Unsheltered share</th>
-                  <td>
-                    ${percentage(city.unsheltered, city.total)}
-                  </td>
-                </tr>
-                <tr>
-                  <th>Unsheltered : sheltered</th>
-                  <td>${ratio(city)}</td>
-                </tr>
-                <tr>
-                  <th>Share of county total</th>
-                  <td>
-                    ${percentage(city.total, county.total)}
-                  </td>
-                </tr>
-                <tr>
-                  <th>Shelters in project sample</th>
-                  <td>${mappedShelters(city.city)}</td>
-                </tr>
-              </table>
-
-              <p>
-                <a
-                  href="https://osh.santaclaracounty.gov/2025-PIT"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  County PIT report, page 18
-                </a>
-              </p>
-
-              <small>
-                City-level count, with marker at city center.
-                Exact person locations are not available.
-                The shelter sample is incomplete.
-              </small>
-            </div>
-          `, {
-            maxWidth: 340
+          fallback.on("tileerror", () => {
+            failed = true;
+            status.textContent =
+              "Some map tiles could not load. Check your connection.";
           });
 
+          fallback.on("load", () => {
+            if (!failed) {
+              status.textContent =
+                "Select a city or click a circle for details.";
+            }
+          });
+
+          fallback.addTo(map);
+        });
+
+        tiles.addTo(map);
+
+        cities.forEach((city, index) => {
+          const radius = Math.sqrt(city.total) * 0.48;
+
+          const marker = L.circleMarker([city.lat, city.lng], {
+            radius,
+            color: "#92251f",
+            weight: 2,
+            fillColor: "#d73027",
+            fillOpacity: 0.25
+          }).addTo(map);
+
+          marker.bindPopup(
+            details(city) +
+            `<small>City-center reference point.
+            Source: 2025 county PIT report, page 18.</small>`,
+            { maxWidth: 320 }
+          );
+
           marker.on("click", () => {
-            citySelect.value = city.city;
-            renderDetails(city);
-            updateReportedLabels();
+            select.value = String(index);
+            document.getElementById("city-detail").innerHTML = details(city);
+            updateLabels();
           });
 
           const label = L.tooltip({
             permanent: true,
             direction: "top",
-            offset: [
-              0,
-              -(Math.sqrt(city.total) * 0.48 + 4)
-            ],
-            className: "reported-city-label",
+            offset: [0, -radius - 4],
+            className: "city-label",
             opacity: 1
           }).setLatLng([city.lat, city.lng]);
 
-          reportedLabels.push({ city, label });
+          labels.push({ city, index, label });
         });
 
-        reportedMap.on("zoomend", updateReportedLabels);
-        updateReportedLabels();
-
-        addShelters(illustrationMap);
-        addShelters(reportedMap);
-
-        // REPORTED MAP GUIDE
-
-        const detailGuide = L.control({
-          position: "bottomleft"
+        shelters.forEach(shelter => {
+          L.circleMarker([shelter.lat, shelter.lng], {
+            pane: "shelters",
+            radius: 8,
+            color: "#fff",
+            weight: 2,
+            fillColor: "#2166ac",
+            fillOpacity: 1
+          })
+            .bindTooltip(shelter.name)
+            .bindPopup(`
+              <strong>${shelter.name}</strong>
+              <p>${shelter.address}</p>
+              <small>
+                Partial project sample.
+                Current operation has not been verified.
+              </small>
+            `)
+            .addTo(map);
         });
 
-        detailGuide.onAdd = function () {
-          const box = L.DomUtil.create(
-            "div",
-            "map-detail-guide"
-          );
-
-          box.innerHTML = `
-            <strong>Reported city counts</strong><br>
-            Select a city for detailed labels.<br>
-            Zoom in to reveal more city names.<br>
-            Click red circles for all statistics.<br>
-            Blue: five-site shelter sample.
-          `;
-
-          L.DomEvent.disableClickPropagation(box);
-          L.DomEvent.disableScrollPropagation(box);
-
-          return box;
-        };
-
-        detailGuide.addTo(reportedMap);
-
-        L.control.scale({
-          position: "bottomright"
-        }).addTo(illustrationMap);
-
-        L.control.scale({
-          position: "bottomright"
-        }).addTo(reportedMap);
-
-        function resizeMaps() {
-          illustrationMap.invalidateSize();
-          reportedMap.invalidateSize();
-        }
-
-        window.addEventListener("resize", resizeMaps);
+        map.on("zoomend", updateLabels);
+        L.control.scale().addTo(map);
+        applySelection();
 
         if ("ResizeObserver" in window) {
-          const observer = new ResizeObserver(resizeMaps);
-          observer.observe(document.querySelector(".map-pair"));
+          new ResizeObserver(() => map.invalidateSize())
+            .observe(document.getElementById("map"));
         }
 
-        // Respect a selection made while Leaflet was loading.
-        if (citySelect.value) {
-          selectCity(citySelect.value);
-        }
+        window.addEventListener("resize", () => map.invalidateSize());
 
       } catch (error) {
-        console.error("Map initialization failed:", error);
-
-        document.querySelectorAll(".map-status").forEach(status => {
-          status.textContent =
-            "The map could not start. Open this HTML in a browser " +
-            "with an internet connection. File previews may block scripts.";
-        });
+        console.error(error);
+        status.textContent =
+          "The map could not start. Open this HTML in a browser " +
+          "with an internet connection; file previews may block scripts.";
       }
     }
 
-    initializeMaps();
+    startMap();
   </script>
 </body>
 </html>
